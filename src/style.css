@@ -26,6 +26,20 @@ h1{
     aspect-ratio: 3 / 5;
     position: relative;
     text-align: center; 
+    border: solid 3px white;
+
+    transition: all 0.5s ease-out;
+    opacity: 1;
+    transform: none;
+    z-index: auto;
+}
+.card-animation-start {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(0.5) !important;
+  opacity: 0 !important;
+  z-index: 1000 !important;
 }
 
 .enemy-card h3{
@@ -49,5 +63,59 @@ h1{
     left: 50%;
     transform: translateX(-50%) rotate(30deg);
     z-index: 0;
-  }
+}
+
+.player-card{
+  width: 70px;
+  height: auto;
+  aspect-ratio: 3 / 5;
+  position: relative;
+  text-align: center; 
+  border: solid 3px black;
+
+  transition: all 0.5s ease-out;
+  opacity: 1;
+  transform: none;
+  z-index: auto;
+}
+
+#container-player-cards .player-card:hover {
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+.background-card{
+  width: 90%;
+  height: 95%;
+  border-radius: 5px;
+  background-color: green;
+}
+.background-card h3{
+  color: white;
+  font-size: 3vw;
+  z-index: 1;
+  text-shadow: 
+  2px 2px 0 #000,  
+  -2px -2px 0 #000,  
+  2px -2px 0 #000,  
+  -2px 2px 0 #000;
+}
+.background-card::after {
+  content: "";
+  width: 6vw;
+  height: auto;
+  aspect-ratio: 3 / 5;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) rotate(30deg);
+  z-index: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
 
