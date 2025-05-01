@@ -1,5 +1,53 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
-
+@media (max-width: 767px) {
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+      grid-gap: 10px; /* Espacio entre cartas */
+    }
+  }
 body{
     background: white;
+    font-family: 'Luckiest Guy', sans-serif  !important;
 }
+
+h1{
+    color: yellow;
+    text-shadow: 
+    2px 2px 0 #000,  
+    -2px -2px 0 #000,  
+    2px -2px 0 #000,  
+    -2px 2px 0 #000;
+}
+
+.enemy-card{
+    width: 70px;
+    height: auto;
+    aspect-ratio: 3 / 5;
+    position: relative;
+    text-align: center; 
+}
+
+.enemy-card h3{
+    color: yellow;
+    font-size: 3vw;
+    z-index: 1;
+    text-shadow: 
+    2px 2px 0 #000,  
+    -2px -2px 0 #000,  
+    2px -2px 0 #000,  
+    -2px 2px 0 #000;
+}
+.enemy-card::after {
+    content: "";
+    width: 6vw;
+    height: auto;
+    aspect-ratio: 3 / 5;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) rotate(30deg);
+    z-index: 0;
+  }
+
