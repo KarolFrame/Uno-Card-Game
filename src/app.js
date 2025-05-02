@@ -4,8 +4,8 @@ const _deleteButton = () =>{
 }
 
 const _createEnemyCards = () => {
-  const enemyContainer = document.getElementById("container-enemy-cards");
-  const templateEnemyCard = document.getElementById("template-enemy-card");
+  const enemyContainer = document.querySelector("#container-enemy-cards");
+  const templateEnemyCard = document.querySelector("#template-enemy-card");
   for (let index = 0; index < 7; index++) {
     const clone = templateEnemyCard.content.cloneNode(true);
     const card = clone.querySelector(".enemy-card");
@@ -38,8 +38,8 @@ const _setRandomCard = (actualCard) =>{
 }
 
 const _createFirstCard = () =>{
-  const gameZone = document.getElementById("game-zone");
-  const templateFirstCard = document.getElementById("template-player-card");
+  const gameZone = document.querySelector("#game-zone");
+  const templateFirstCard = document.querySelector("#template-player-card");
   const clone = templateFirstCard.content.cloneNode(true);
   const card = clone.querySelector(".player-card");
   card.classList.add("card-animation-start");
@@ -53,8 +53,8 @@ const _createFirstCard = () =>{
 }
 
 const _createPlayerCards = ()=>{
-  const playerContainer = document.getElementById("container-player-cards");
-  const templatePlayerCard = document.getElementById("template-player-card");
+  const playerContainer = document.querySelector("#container-player-cards");
+  const templatePlayerCard = document.querySelector("#template-player-card");
   for (let index = 0; index < 7; index++) {
     const clone = templatePlayerCard.content.cloneNode(true);
     const card = clone.querySelector(".player-card");
