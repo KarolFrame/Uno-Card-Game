@@ -36,17 +36,28 @@
         </div>
       </div>
       <div class="row">
+        <div class="col mt-3">
+          <h1 class="turn-text hidden">TU TURNO</h1>
+        </div>
+      </div>
+      <div class="row">
         <div class="col">
-          <div id="game-zone" class="d-flex justify-content-center align-items-center flex-wrap m-5 flex-column">
-            <h2 class="turn-text hidden">TU TURNO</h2>
+          <div id="game-zone" class="d-flex justify-content-center align-items-center flex-wrap m-3 gap-3">
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <div id="container-player-cards" class="d-flex justify-content-center align-items-start flex-wrap mt-3 gap-2">
-
           </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="container-fluid text-center bg-light">
+      <div class="row">
+        <div class="col">
+          <button type="button" id="button-Restart" class=" btn btn-danger m-3 hidden" onclick="reStart()">RESTART</button>
         </div>
       </div>
     </div>
@@ -55,7 +66,11 @@
         <h3>UNO</h3>
       </div>  
     </template>
-
+    <template id="template-deck-card">
+      <div class="deck col-2 col-lg-1 bg-dark rounded-3 d-flex justify-content-center align-items-center text-center">
+        <h3>UNO</h3>
+      </div>  
+    </template>
     <template id="template-player-card">
       <div class="player-card col-2 col-lg-1 bg-light border-dark rounded-3 d-flex justify-content-center align-items-center text-center">
         <div class="background-card d-flex justify-content-center align-items-center text-center">

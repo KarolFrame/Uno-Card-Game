@@ -7,6 +7,11 @@ function _delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const _activateReStartButton = () =>{
+  const button = document.querySelector("#button-Restart")
+  button.classList.remove("hidden");
+}
+
 const _setTurnTest = (text) =>{
   const turnText = document.querySelector(".turn-text");
   turnText.classList.remove("hidden");
@@ -18,19 +23,23 @@ const _deleteButton = () =>{
   buttonPlayGame.classList.add("hidden");
 }
 
-const _createEnemyCards = () => {
+const _getEnemyCard = () =>{
   const enemyContainer = document.querySelector("#container-enemy-cards");
   const templateEnemyCard = document.querySelector("#template-enemy-card");
-  for (let index = 0; index < 7; index++) {
-    const clone = templateEnemyCard.content.cloneNode(true);
-    const card = clone.querySelector(".enemy-card");
-    card.classList.add("card-animation-start");
-    enemyContainer.appendChild(clone);
+  const clone = templateEnemyCard.content.cloneNode(true);
+  const card = clone.querySelector(".enemy-card");
+  card.classList.add("card-animation-start");
+  enemyContainer.appendChild(clone);
+  requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        card.classList.remove("card-animation-start");
-      });
+      card.classList.remove("card-animation-start");
     });
+  });
+}
+
+const _createEnemyCards = () => {
+  for (let index = 0; index < 7; index++) {
+    _getEnemyCard();
   }
 };
 
@@ -57,7 +66,7 @@ const _setRandomCard = (card) => {
   card.setAttribute("data-number", number);
 };
 
-const _createFirstCard = () =>{
+const _getFirstCard = () =>{
   const gameZone = document.querySelector("#game-zone");
   const templateFirstCard = document.querySelector("#template-player-card");
   const clone = templateFirstCard.content.cloneNode(true);
@@ -74,21 +83,52 @@ const _createFirstCard = () =>{
   });
 }
 
-const _createPlayerCards = ()=>{
+const _getDeck = () =>{
+  const gameZone = document.querySelector("#game-zone");
+  const templateDeck = document.querySelector("#template-deck-card");
+  const clone = templateDeck.content.cloneNode(true);
+  const card = clone.querySelector(".deck");
+  card.classList.add("card-animation-start");
+  gameZone.appendChild(clone);
+  card.setAttribute("onclick", "_playerUsesDeck()");
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      card.classList.remove("card-animation-start");
+    });
+  });
+}
+
+const _playerUsesDeck = () =>{
+  _getPlayerCard();
+  const card = document.querySelector(".deck");
+  card.setAttribute("onclick", "");
+  startEnemyTurn();
+}
+
+const _createInGameZone = () =>{
+  _getFirstCard();
+  _getDeck();
+}
+
+const _getPlayerCard = () =>{
   const playerContainer = document.querySelector("#container-player-cards");
   const templatePlayerCard = document.querySelector("#template-player-card");
-  for (let index = 0; index < 7; index++) {
-    const clone = templatePlayerCard.content.cloneNode(true);
-    const card = clone.querySelector(".player-card");
-    card.classList.add("card-animation-start");
-    _setRandomCard(card);
-    playerContainer.appendChild(clone);
+  const clone = templatePlayerCard.content.cloneNode(true);
+  const card = clone.querySelector(".player-card");
+  card.classList.add("card-animation-start");
+  _setRandomCard(card);
+  playerContainer.appendChild(clone);
+  requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        card.classList.remove("card-animation-start");
-        card.setAttribute("onclick", "compareCards()");
-      });
+      card.classList.remove("card-animation-start");
+      card.setAttribute("onclick", "compareCards()");
     });
+  });
+}
+
+const _createPlayerCards = ()=>{
+  for (let index = 0; index < 7; index++) {
+    _getPlayerCard();
   }
 }
 
@@ -123,22 +163,37 @@ const _disablePlayerCards = () =>{
   allPlayerCards.forEach(card =>{
     card.setAttribute("onclick", "");
   });
+  const deck = document.querySelector(".deck");
+  deck.setAttribute("onclick", "");
 }
+
 const _ablePlayerCards = () =>{
   const allPlayerCards = document.querySelectorAll(".player-card:not(.hidden)");
   allPlayerCards.forEach(card =>{
     card.setAttribute("onclick", "compareCards()");
   });
+  const deck = document.querySelector(".deck");
+  deck.setAttribute("onclick", "_playerUsesDeck()");
 }
 
 const _calculateEnemyProbabiliy = () =>{
-  const enemyHand = document.querySelectorAll(".enemy-card");
+  const enemyHand = document.querySelectorAll(".enemy-card:not(.hidden)");
   const enemyCardsCount = enemyHand.length;
   const chanceSingleCard = 0.325;
   const probabilityNonePlayable = Math.pow(1 - chanceSingleCard, enemyCardsCount);
   const probabilityAtLeastOnePlayable = 1 - probabilityNonePlayable;
 
-  return probabilityAtLeastOnePlayable >= 0.5;
+  return Math.random() < probabilityAtLeastOnePlayable;
+}
+
+const _hasPlayerWon = () => {
+  const playerHand = document.querySelectorAll(".player-card:not(.hidden)");
+  console.log(playerHand.length);
+  if(playerHand.length >= 2){
+    return false;
+  }
+  _activateReStartButton();
+  return true;
 }
 
 const compareCards = () =>{
@@ -159,6 +214,11 @@ const compareCards = () =>{
   if(playerStats.color == inGameStats.color || playerStats.number == inGameStats.number){
     _playSound('assets/sounds/correct_Sound.mp3');
     _playerUsesCard(playerStats, inGameStats);
+    if(_hasPlayerWon()){
+      _setTurnTest("YOU WIN");
+      _playSound("assets/sounds/win_Sound.mp3");
+      return;
+    }
     startEnemyTurn();
     return;
   }
@@ -182,34 +242,56 @@ const _setNewStatsByEnemy = () =>{
   _setCardInGameStats(cardInGame.getAttribute("data-color"), _getRandomNumber(10), cardInGame);
 }
 
+const _hasEnemyWon = () => {
+  const enemyHand = document.querySelectorAll(".enemy-card:not(.hidden)");
+  console.log(enemyHand.length);
+  if(enemyHand.length >= 2){
+    return false;
+  }
+  _activateReStartButton();
+  return true;
+}
+
 async function startEnemyTurn() {
   _setTurnTest('ENEMY TURN!');
   _disablePlayerCards();
 
   await _delay(2000);
-
+  _playSound("assets/sounds/card_Sound.mp3");
   if(_calculateEnemyProbabiliy()){
-    alert("enemigo tiene carta");
     _enemyUseCard();
     _setNewStatsByEnemy();
-    
-    await _delay(2000);
 
+    await _delay(500);
+    if(_hasEnemyWon()){
+      _setTurnTest('YOU LOSE');
+      _playSound("assets/sounds/lose_Sound.mp3");
+      return;
+    }
+    
+    _playSound("assets/sounds/turn_Sound.mp3");
     _setTurnTest('YOUR TURN!');
     _ablePlayerCards();
 
     return;
   }
-  alert("enemigo no tiene carta");
+  _getEnemyCard();
+  _ablePlayerCards();
 }
 
 const startGame = () => {
   _deleteButton();
   _setTurnTest('YOUR TURN!');
   _createEnemyCards();
-  _createFirstCard();
+  _createInGameZone();
   _createPlayerCards();
+}
+
+const reStart = () =>{
+  location.reload();
 }
 
 window.startGame = startGame;
 window.compareCards = compareCards;
+window._playerUsesDeck = _playerUsesDeck;
+window.reStart = reStart;
