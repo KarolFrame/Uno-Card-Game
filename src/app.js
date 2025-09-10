@@ -12,7 +12,7 @@ const _activateReStartButton = () =>{
   button.classList.remove("hidden");
 }
 
-const _setTurnTest = (text) =>{
+const _setTurnText = (text) =>{
   const turnText = document.querySelector(".turn-text");
   turnText.classList.remove("hidden");
   turnText.textContent = text;
@@ -215,7 +215,7 @@ const compareCards = () =>{
     _playSound('assets/sounds/correct_Sound.mp3');
     _playerUsesCard(playerStats, inGameStats);
     if(_hasPlayerWon()){
-      _setTurnTest("YOU WIN");
+      _setTurnText("YOU WIN");
       _playSound("assets/sounds/win_Sound.mp3");
       return;
     }
@@ -253,7 +253,7 @@ const _hasEnemyWon = () => {
 }
 
 async function startEnemyTurn() {
-  _setTurnTest('ENEMY TURN!');
+  _setTurnText('ENEMY TURN!');
   _disablePlayerCards();
 
   await _delay(2000);
@@ -264,13 +264,13 @@ async function startEnemyTurn() {
 
     await _delay(500);
     if(_hasEnemyWon()){
-      _setTurnTest('YOU LOSE');
+      _setTurnText('YOU LOSE');
       _playSound("assets/sounds/lose_Sound.mp3");
       return;
     }
     
     _playSound("assets/sounds/turn_Sound.mp3");
-    _setTurnTest('YOUR TURN!');
+    _setTurnText('YOUR TURN!');
     _ablePlayerCards();
 
     return;
@@ -281,7 +281,7 @@ async function startEnemyTurn() {
 
 const startGame = () => {
   _deleteButton();
-  _setTurnTest('YOUR TURN!');
+  _setTurnText('YOUR TURN!');
   _createEnemyCards();
   _createInGameZone();
   _createPlayerCards();

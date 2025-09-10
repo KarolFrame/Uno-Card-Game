@@ -44,7 +44,7 @@ h1{
 
 .enemy-card h3, .deck h3{
   color: yellow;
-  font-size: 3vw;
+  font-size: 250%;
   z-index: 1;
   text-shadow: 
   2px 2px 0 #000,  
@@ -54,7 +54,7 @@ h1{
 }
 .enemy-card::after, .deck::after{
   content: "";
-  width: 6vw;
+  width: 80%;
   height: auto;
   aspect-ratio: 3 / 5;
   background-color: red;
@@ -92,7 +92,7 @@ h1{
 }
 .background-card h3{
   color: white;
-  font-size: 3vw;
+  font-size: 400%;
   z-index: 1;
   text-shadow: 
   2px 2px 0 #000,  
@@ -102,7 +102,7 @@ h1{
 }
 .background-card::after {
   content: "";
-  width: 6vw;
+  width: 80%;
   height: auto;
   aspect-ratio: 3 / 5;
   background-color: white;
